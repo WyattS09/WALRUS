@@ -61,8 +61,9 @@ return (
     
     {roomId && (
     <>
-    <button onClick={() => send('START_GAME', { roomId })}>Start Question</button>
-    {leaderboard && <button onClick={() => send('END_QUESTION', { roomId })}>Next Question</button>}
+    <button onClick={() => send('START_GAME', { roomId })}>
+      {leaderboard ? 'Start Next Question' : 'Start Question'}
+    </button>
     </>
     )}
     </div>
