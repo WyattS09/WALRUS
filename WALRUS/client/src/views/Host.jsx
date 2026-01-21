@@ -5,18 +5,24 @@ import { useState, useEffect } from 'react'
 export default function Host() {
 const [roomId, setRoomId] = useState(null)
 const [players, setPlayers] = useState([])
+const [socketReady, setSocketReady] = useState(false)
 
 
 useEffect(() => {
+socket.addEventListener('open', () => setSocketReady(true))
+
 socket.onmessage = e => {
 const msg = JSON.parse(e.data)
 if (msg.type === 'ROOM_CREATED') setRoomId(msg.roomId)
 if (msg.type === 'ROSTER') setPlayers(msg.players)
 }
 }, [])
+
 return (
     <div>
-    <button onClick={() => send('CREATE_ROOM')}>Create Room</button>
+    <button onClick={() => send('CREATE_ROOM')} disabled={!socketReady}>
+      {socketReady ? 'Create Room' : 'Connecting...'}
+    </button>
     {roomId && <h2>Room: {roomId}</h2>}
     
     

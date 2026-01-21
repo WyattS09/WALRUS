@@ -32,6 +32,7 @@ case 'CREATE_ROOM': {
     startTs: null
     }
     rooms.set(roomId, room)
+    client.roomId = roomId
     await saveRoom(room)
     ws.send(JSON.stringify({ type: 'ROOM_CREATED', roomId }))
     break
