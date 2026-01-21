@@ -39,22 +39,22 @@ case 'CREATE_ROOM': {
     }
 case 'JOIN_ROOM': {
 let room = rooms.get(msg.roomId) || await loadRoom(msg.roomId)
-if (!room) return
-
+if (!room) {
+console.log('Room not found:', msg.roomId)
+return
+}
 
 client.roomId = msg.roomId
 
-
-let player = room.players.find(p => p.id === msg.playerId)
+let player = room.players.find(p => p.id === client.id)
 if (!player) {
 player = { id: client.id, name: msg.name, score: 0, latency: 50 }
 room.players.push(player)
+console.log('Player joined:', client.id, 'room:', msg.roomId)
 }
-
 
 rooms.set(msg.roomId, room)
 await saveRoom(room)
-
 
 broadcast(msg.roomId, { type: 'ROSTER', players: room.players })
 break
