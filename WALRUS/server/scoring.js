@@ -1,6 +1,6 @@
 export function scoreAnswer({ startTs, receivedTs, latency, duration }) {
-    const maxPoints = 1000
-    const p = 1.3
+    const maxPoints = 100
+    const p = 0.8
     
     
     const t = (receivedTs - startTs) - latency

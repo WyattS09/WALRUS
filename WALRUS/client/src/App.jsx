@@ -7,15 +7,17 @@ import Questions from './views/Questions'
 
 export default function App() {
   const roleParam = new URLSearchParams(window.location.search).get('role')
+  const [username, setUsername] = useState('')
 
   // Projector / whiteboard view
   if (roleParam === 'display') return <Display />
 
   const [view, setView] = useState('home')
 
-  if (view === 'host') return <Host />
-  if (view === 'player') return <Player />
+  if (view === 'host') return <Host username={username} />
+  if (view === 'player') return <Player username={username} />
   if (view === 'questions') return <Questions />
 
-  return <Home setView={setView} />
+  return <Home setView={setView} username={username} setUsername={setUsername} />
 }
+
