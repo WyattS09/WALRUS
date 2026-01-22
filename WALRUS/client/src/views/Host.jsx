@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 
 
 export default function Host({ username, customQuestions = [] }) {
+  console.log('Host.jsx: customQuestions prop:', customQuestions)
 const [roomId, setRoomId] = useState(null)
 const [players, setPlayers] = useState([])
 const [leaderboard, setLeaderboard] = useState(null)
@@ -14,6 +15,7 @@ const handleCreateRoom = () => {
     alert('Please add at least one question before creating a room')
     return
   }
+  console.log('Sending CREATE_ROOM with questions:', customQuestions)
   send('CREATE_ROOM', { questions: customQuestions })
 }
 

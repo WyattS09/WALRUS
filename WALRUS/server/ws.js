@@ -13,6 +13,7 @@ clients.set(ws, { id, roomId: null })
 
 
 export async function handleMessage(ws, msg) {
+  console.log('ws.js: handleMessage raw msg:', msg, 'type:', typeof msg)
 const client = clients.get(ws)
 
 
@@ -32,6 +33,7 @@ case 'CREATE_ROOM': {
       startTs: null,
       questions: Array.isArray(msg.questions) && msg.questions.length > 0 ? msg.questions : null
     }
+    console.log('CREATE_ROOM received questions:', msg.questions)
     rooms.set(roomId, room)
     client.roomId = roomId
     await saveRoom(room)
@@ -75,19 +77,11 @@ case 'PONG': {
     
     
 case 'START_GAME': {
-broadcast(msg.roomId, { type: 'QUIZ_FINISHED', message: 'Quiz is complete!' })
-broadcast(msg.roomId, {
-type: 'QUESTION',
-questionId: q.questionId,
-prompt: q.prompt,
-choices: shuffledChoices,
-startTs: room.startTs,
-duration: q.durationSec * 1000
-})
-break
+// (Fixed: removed invalid pre-broadcast and break)
 const room = rooms.get(msg.roomId)
 if (!room) return
 
+console.log('START_GAME using questions:', room.questions)
 const questionSet = Array.isArray(room.questions) && room.questions.length > 0 ? room.questions : questions
 if (room.qIndex >= questionSet.length) {
   broadcast(msg.roomId, { type: 'QUIZ_FINISHED', message: 'Quiz is complete!' })
