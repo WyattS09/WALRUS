@@ -2,13 +2,20 @@ import { send, socket } from '../socket'
 import { useState, useEffect } from 'react'
 
 
-export default function Host({ username }) {
+export default function Host({ username, customQuestions = [] }) {
 const [roomId, setRoomId] = useState(null)
 const [players, setPlayers] = useState([])
 const [leaderboard, setLeaderboard] = useState(null)
 const [question, setQuestion] = useState(null)
 const [timeLeft, setTimeLeft] = useState(0)
 const [socketReady, setSocketReady] = useState(socket.readyState === WebSocket.OPEN)
+const handleCreateRoom = () => {
+  if (customQuestions.length === 0) {
+    alert('Please add at least one question before creating a room')
+    return
+  }
+  send('CREATE_ROOM', { questions: customQuestions })
+}
 
 
 useEffect(() => {
@@ -58,8 +65,8 @@ return () => clearInterval(interval)
 return (
     <div>
     <h1>WALRUS Host</h1>
-    <button onClick={() => send('CREATE_ROOM')} disabled={!socketReady}>
-      {socketReady ? 'Create Room' : 'Connecting...'}
+    <button onClick={handleCreateRoom} disabled={!socketReady || customQuestions.length === 0}>
+      {!socketReady ? 'Connecting...' : customQuestions.length === 0 ? 'Add Questions First' : 'Create Room'}
     </button>
     {roomId && <h2>Room: {roomId}</h2>}
     

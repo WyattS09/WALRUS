@@ -24,12 +24,13 @@ break
 case 'CREATE_ROOM': {
     const roomId = Math.random().toString(36).slice(2, 7).toUpperCase()
     const room = {
-    roomId,
-    hostId: client.id,
-    qIndex: 0,
-    players: [],
-    submissions: {},
-    startTs: null
+      roomId,
+      hostId: client.id,
+      qIndex: 0,
+      players: [],
+      submissions: {},
+      startTs: null,
+      questions: Array.isArray(msg.questions) && msg.questions.length > 0 ? msg.questions : null
     }
     rooms.set(roomId, room)
     client.roomId = roomId
@@ -74,31 +75,7 @@ case 'PONG': {
     
     
 case 'START_GAME': {
-const room = rooms.get(msg.roomId)
-if (!room) return
-
-if (room.qIndex >= questions.length) {
-console.log('Quiz finished! All questions answered')
 broadcast(msg.roomId, { type: 'QUIZ_FINISHED', message: 'Quiz is complete!' })
-return
-}
-
-const q = questions[room.qIndex]
-room.startTs = Date.now()
-room.submissions = {}
-
-// Shuffle choices and track where the correct answer ended up
-console.log('DEBUG START_GAME: Question index:', room.qIndex)
-console.log('DEBUG START_GAME: Original choices:', q.choices)
-console.log('DEBUG START_GAME: Correct index from question:', q.correctIndex)
-const correctChoice = q.choices[q.correctIndex]
-console.log('DEBUG START_GAME: Correct choice:', correctChoice)
-const shuffledChoices = shuffle(q.choices)
-console.log('DEBUG START_GAME: Shuffled choices:', shuffledChoices)
-const correctIndex = shuffledChoices.indexOf(correctChoice)
-console.log('DEBUG START_GAME: Correct index AFTER shuffle:', correctIndex)
-room.currentCorrectIndex = correctIndex
-
 broadcast(msg.roomId, {
 type: 'QUESTION',
 questionId: q.questionId,
@@ -106,6 +83,34 @@ prompt: q.prompt,
 choices: shuffledChoices,
 startTs: room.startTs,
 duration: q.durationSec * 1000
+})
+break
+const room = rooms.get(msg.roomId)
+if (!room) return
+
+const questionSet = Array.isArray(room.questions) && room.questions.length > 0 ? room.questions : questions
+if (room.qIndex >= questionSet.length) {
+  broadcast(msg.roomId, { type: 'QUIZ_FINISHED', message: 'Quiz is complete!' })
+  return
+}
+
+const q = questionSet[room.qIndex]
+room.startTs = Date.now()
+room.submissions = {}
+
+// Shuffle choices and track where the correct answer ended up
+const correctChoice = q.choices[q.correctIndex]
+const shuffledChoices = shuffle(q.choices)
+const correctIndex = shuffledChoices.indexOf(correctChoice)
+room.currentCorrectIndex = correctIndex
+
+broadcast(msg.roomId, {
+  type: 'QUESTION',
+  questionId: q.questionId,
+  prompt: q.prompt,
+  choices: shuffledChoices,
+  startTs: room.startTs,
+  duration: q.durationSec * 1000
 })
 break
 }
