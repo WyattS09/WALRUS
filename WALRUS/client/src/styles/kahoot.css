@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap');
+
+
+:root {
+--bg-main: #f6f0cf;
+--bg-overlay: #e9e2bf;
+--text-dark: #2e2e2e;
+--text-muted: #6a6a6a;
+
+
+--card-bg: #ffffff;
+--shadow-soft: 0 6px 20px rgba(0,0,0,0.08);
+
+
+--accent-green: #2ecc71;
+--accent-red: #e74c3c;
+}
+
+
+* { box-sizing: border-box; }
+
+
+body {
+margin: 0;
+font-family: 'Montserrat', sans-serif;
+background: radial-gradient(circle at bottom right, #fff 0%, var(--bg-main) 60%);
+color: var(--text-dark);
+}
+.screen-center { height: 100vh; display: flex; align-items: center; justify-content: center; }
+.center-card { background: var(--card-bg); box-shadow: var(--shadow-soft); padding: 48px 64px; border-radius: 16px; text-align: center; }
+
+
+.home-buttons { display: grid; gap: 1rem; margin-top: 2rem; }
+.home-button { font-size: 1.4rem; padding: 1.2rem; background: linear-gradient(135deg, #7b2ff7, #f107a3); color: white; border-radius: 12px; border: none; font-weight: 700; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.home-button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+
+
+.player-hud { position: fixed; bottom: 0; left: 0; right: 0; height: 56px; background: rgba(0,0,0,0.45); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: space-between; padding: 0 18px; z-index: 40; color: white; }
+.player-hud-left { font-size: 16px; font-weight: 700; }
+.player-hud-right { font-size: 18px; font-weight: 800; }
+
+
+.feedback-screen { position: fixed; inset: 0; background: radial-gradient(circle at bottom right, #dcd5b5 0%, #c9c2a6 65%); display: flex; align-items: center; justify-content: center; z-index: 50; }
+.feedback-content { text-align: center; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.feedback-title { font-size: 48px; font-weight: 800; margin-bottom: 24px; }
+.feedback-icon { width: 96px; height: 96px; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 56px; font-weight: 900; }
+.feedback-correct .feedback-icon { background: #6cc04a; }
+.feedback-wrong .feedback-icon { background: #e74c3c; }
+.feedback-streak { font-size: 20px; font-weight: 700; margin-bottom: 18px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.streak-badge { background: #ff8c1a; color: white; font-size: 14px; font-weight: 800; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
+.feedback-points-box { background: rgba(0,0,0,0.35); padding: 14px 48px; border-radius: 8px; font-size: 36px; font-weight: 800; margin: 0 auto 20px; width: fit-content; animation: popIn 0.4s ease-out; }
+.feedback-subtext { font-size: 18px; font-weight: 600; opacity: 0.95; }
+@keyframes popIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }

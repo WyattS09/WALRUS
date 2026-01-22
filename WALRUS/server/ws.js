@@ -202,3 +202,8 @@ case 'END_QUESTION': {
     function shuffle(arr) {
     return arr.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(v => v[1])
 }
+ws.send(JSON.stringify({
+  type: 'ANSWER_RESULT',
+  correct: isCorrect,
+  points: awardedPoints
+}))

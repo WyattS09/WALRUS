@@ -133,3 +133,51 @@ cursor: answered ? 'not-allowed' : 'pointer'
 </div>
 )
 }
+import { useEffect, useState } from 'react'
+import { socket, send } from '../socket'
+import FeedbackScreen from '../components/FeedbackScreen'
+import PlayerHUD from '../components/PlayerHUD'
+
+
+export default function Player() {
+const [phase, setPhase] = useState('waiting') // waiting | question | feedback
+const [username, setUsername] = useState(null)
+const [totalScore, setTotalScore] = useState(0)
+const [roundPoints, setRoundPoints] = useState(0)
+const [streak, setStreak] = useState(0)
+const [lastCorrect, setLastCorrect] = useState(false)
+
+useEffect(() => {
+  socket.onmessage = e => {
+  const msg = JSON.parse(e.data)
+  switch(msg.type) {
+  case 'JOINED':
+  setUsername(msg.name)
+  setTotalScore(msg.score ?? 0)
+  break
+  case 'QUESTION':
+  setPhase('question')
+  setRoundPoints(0)
+  break
+  case 'ANSWER_RESULT':
+  setLastCorrect(msg.correct)
+  setRoundPoints(msg.points)
+  setTotalScore(prev => prev + msg.points)
+  setStreak(prev => msg.correct ? prev + 1 : 0)
+  setPhase('feedback')
+  break
+  case 'NEXT_QUESTION':
+  setPhase('question')
+  break
+}
+}
+}, [])
+
+
+return (
+<>
+{phase === 'feedback' && <FeedbackScreen correct={lastCorrect} points={roundPoints} streak={streak} message={lastCorrect ? (streak>=3 ? "You're on fire!" : "Nice work!") : ''} />}
+<PlayerHUD username={username} totalScore={totalScore} />
+</>
+)
+}

@@ -116,3 +116,24 @@ return (
     </div>
     )
     }
+    import '../styles/kahoot.css'
+
+    export default function Host() {
+      return (
+        <div className="screen-center">
+          <div className="pin-card">
+            <div>
+              <div style={{ fontSize: 14 }}>Game PIN</div>
+              <div className="pin-code">624 789</div>
+            </div>
+          </div>
+    
+          <div className="host-actions">
+            <button>Start</button>
+          </div>
+    
+          <h1 style={{ fontSize: 64, fontWeight: 800 }}>Quiz Room</h1>
+        </div>
+      )
+    }
+    

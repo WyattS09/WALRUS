@@ -51,4 +51,17 @@ export default function Home({ setView, username, setUsername }) {
       </div>
     )
   }
-  
+  export default function Home({ setView }) {
+    return (
+    <div className="screen-center">
+    <div className="center-card">
+    <h1>Realtime Quiz</h1>
+    <div className="home-buttons">
+    <button className="home-button" onClick={()=>setView('host')}>Create Room</button>
+    <button className="home-button" onClick={()=>setView('player')}>Join Room</button>
+    <button className="home-button" onClick={()=>setView('questions')}>Questions</button>
+    </div>
+    </div>
+    </div>
+    )
+    }
