@@ -53,6 +53,7 @@ class SocketWrapper {
   }
 
   send(data) {
+    console.log('socket.js: sending payload:', data)
     if (this.socket.readyState === WebSocket.OPEN) {
       this.socket.send(data)
     } else {
