@@ -3,6 +3,7 @@ import Home from './views/Home';
 import Questions from './views/Questions';
 import Host from './views/Host';
 import Player from './views/Player';
+import QuestionsWithAI from '../../../client/src/views/QuestionsWithAI';
 export default function App() {
   const roleParam = new URLSearchParams(window.location.search).get('role')
   const [username, setUsername] = useState('')
@@ -22,6 +23,10 @@ export default function App() {
   if (view === 'host') return <Host username={username} customQuestions={customQuestions} />
   if (view === 'player') return <Player username={username} />
   if (view === 'questions') return <Questions questions={customQuestions} setQuestions={setCustomQuestions} onDone={() => setView('home')} />
+  if (view === 'questions-ai') return <QuestionsWithAI onAddQuestions={qs => {
+    setCustomQuestions(qs);
+    setView('questions');
+  }} />
 
   return <Home setView={setView} username={username} setUsername={setUsername} />
 }

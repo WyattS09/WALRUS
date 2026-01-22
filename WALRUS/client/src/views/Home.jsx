@@ -44,24 +44,17 @@ export default function Home({ setView, username, setUsername }) {
   
         <button 
           onClick={() => handleRoleSelect('questions')}
-          style={{ padding: '10px 20px', fontSize: '16px' }}
+          style={{ marginRight: '10px', padding: '10px 20px', fontSize: '16px' }}
         >
           Questions
         </button>
+
+        <button 
+          onClick={() => handleRoleSelect('questions-ai')}
+          style={{ padding: '10px 20px', fontSize: '16px', background: '#e0f7fa' }}
+        >
+          AI Question Generator
+        </button>
       </div>
     )
-  }
-  export default function Home({ setView }) {
-    return (
-    <div className="screen-center">
-    <div className="center-card">
-    <h1>Realtime Quiz</h1>
-    <div className="home-buttons">
-    <button className="home-button" onClick={()=>setView('host')}>Create Room</button>
-    <button className="home-button" onClick={()=>setView('player')}>Join Room</button>
-    <button className="home-button" onClick={()=>setView('questions')}>Questions</button>
-    </div>
-    </div>
-    </div>
-    )
-    }
+}
